@@ -21,8 +21,8 @@ RUN pip install -r /requirements.txt
 COPY . /django_project
 
 RUN adduser -D user
-USER user
 RUN chown -R user:user /django_project
+# USER user
 
 EXPOSE 8000
 
