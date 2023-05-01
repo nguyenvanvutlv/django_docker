@@ -160,5 +160,3 @@ cython_debug/
 #.idea/
 
 key.txt 
-docker-compose.yml
-Dockerfile
