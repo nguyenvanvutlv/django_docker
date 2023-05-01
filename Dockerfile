@@ -11,6 +11,7 @@ RUN apk add gcc
 RUN pip3 install --upgrade pip
 RUN pip3 install --extra-index-url https://alpine-wheels.github.io/index numpy
 RUN pip3 install --extra-index-url https://alpine-wheels.github.io/index opencv-python
+RUN pip3 install --extra-index-url https://alpine-wheels.github.io/index scipy
 
 # install dependencies
 RUN pip install --upgrade pip 
