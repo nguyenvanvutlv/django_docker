@@ -11,9 +11,11 @@ import cv2
 import base64
 from PIL import Image
 from image_processing.models import ImageUpload
-from image_processing.process import ProcessImage
+from image_processing.process import ProcessImage, Kmeans
 from io import BytesIO
 # for processing image
+
+
 
 
 
@@ -87,7 +89,7 @@ def upload(request):
 def home(request):    
     print(request.session.keys())
     print(request.session.items())  
-    request.session.set_expiry(60)  
+    # request.session.set_expiry(60)  
     template = loader.get_template("images/base.html")
     context = {
         
@@ -143,10 +145,26 @@ def contrast(request):
 
 
 @login_required
-def kmeans(request):       
+def kmeans(request):    
+    # get current user are login this session
+    user = request.session['_auth_user_id']
+    username = User.objects.filter(id = user)[0].get_username()
+    Author = ImageUpload.objects.filter(author= username)[0]
+    # get image from database
+    current_k = 1
+    if request.method == "POST":
+        current_k = int(request.POST['k_centroids'])
+    
+    
+    frame = cv2.imread(Author.origin.url[1:])
+    frame = cv2.resize(frame, (512, 512))
+    frame_b64 = Kmeans(image= frame, k_centroids= current_k, theta= 500, types= 'RGB').changeBGR2frameb64()
+    
+    
     template = loader.get_template("images/kmeans.html")    
     context = {
-        
+        "url_image" : frame_b64,
+        "current_k" : current_k
     }
-      
+
     return HttpResponse(template.render(context, request))
