@@ -22,6 +22,7 @@ COPY . /django_project
 
 RUN adduser -D user
 USER user
+RUN chown -R user:user /django_project
 
 EXPOSE 8000
 
