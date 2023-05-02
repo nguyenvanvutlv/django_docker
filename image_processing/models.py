@@ -16,9 +16,8 @@ Action = (
 
 class ImageUpload(models.Model):
     author  = models.CharField(max_length= 150, primary_key=True)
+    # author = models.ForeignKey(User, on_delete=models.CASCADE)
     origin  = models.ImageField(upload_to= "")
-    process = models.ImageField(upload_to= "", null=True, blank=True)
-    types = models.CharField(max_length=50, choices=Action)
     
     # def save(self, *args, **kwargs):
         

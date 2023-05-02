@@ -5,20 +5,197 @@
 {% block title %}Tải ảnh{% endblock %}
 
 {% block style %}
-
+<style>
+    body {
+        font-family: sans-serif;
+        background-color: #eeeeee;
+      }
+      
+      .file-upload {
+        background-color: #ffffff;
+        width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      
+      .file-upload-btn {
+        width: 100%;
+        margin: 0;
+        color: #fff;
+        background: #1FB264;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        border-bottom: 4px solid #15824B;
+        transition: all .2s ease;
+        outline: none;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+      
+      .file-upload-btn:hover {
+        background: #1AA059;
+        color: #ffffff;
+        transition: all .2s ease;
+        cursor: pointer;
+      }
+      
+      .file-upload-btn:active {
+        border: 0;
+        transition: all .2s ease;
+      }
+      
+      .file-upload-content {
+        display: none;
+        text-align: center;
+      }
+      
+      .file-upload-input {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        opacity: 0;
+        cursor: pointer;
+      }
+      
+      .image-upload-wrap {
+        margin-top: 20px;
+        border: 4px dashed #1FB264;
+        position: relative;
+      }
+      
+      .image-dropping,
+      .image-upload-wrap:hover {
+        background-color: #1FB264;
+        border: 4px dashed #ffffff;
+      }
+      
+      .image-title-wrap {
+        padding: 0 15px 15px 15px;
+        color: #222;
+      }
+      
+      .drag-text {
+        text-align: center;
+      }
+      
+      .drag-text h3 {
+        font-weight: 100;
+        text-transform: uppercase;
+        color: #15824B;
+        padding: 60px 0;
+      }
+      
+      .file-upload-image {
+        max-height: 200px;
+        max-width: 200px;
+        margin: auto;
+        padding: 20px;
+      }
+      
+      .remove-image {
+        width: 200px;
+        margin: 0;
+        color: #fff;
+        background: #cd4535;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        border-bottom: 4px solid #b02818;
+        transition: all .2s ease;
+        outline: none;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+      
+      .remove-image:hover {
+        background: #c13b2a;
+        color: #ffffff;
+        transition: all .2s ease;
+        cursor: pointer;
+      }
+      
+      .remove-image:active {
+        border: 0;
+        transition: all .2s ease;
+      }
+</style>
 {% endblock %}
 
 {% block js %}
-
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+      
+          var reader = new FileReader();
+      
+          reader.onload = function(e) {
+            $('.image-upload-wrap').hide();
+      
+            $('.file-upload-image').attr('src', e.target.result);
+            $('.file-upload-content').show();
+      
+            $('.image-title').html(input.files[0].name);
+          };
+      
+          reader.readAsDataURL(input.files[0]);
+      
+        } else {
+          removeUpload();
+        }
+      }
+      
+      function removeUpload() {
+        $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+        $('.file-upload-content').hide();
+        $('.image-upload-wrap').show();
+      }
+      $('.image-upload-wrap').bind('dragover', function () {
+              $('.image-upload-wrap').addClass('image-dropping');
+          });
+          $('.image-upload-wrap').bind('dragleave', function () {
+              $('.image-upload-wrap').removeClass('image-dropping');
+      });
+      
+</script>
 {% endblock %}
 
 {% block nav4 %}<a class="nav-link active" aria-current="page" href={% url 'upload' %}>Upload</a>{% endblock %}
 
 
 {% block content %}
-<form method = "post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Upload</button>
-</form>
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+<div class='container'>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="file-upload">
+            <input name="author" maxlength="150" required id="id_author" class="form-control" placeholder="Author" required="" autofocus="" type="text">
+            </br>
+            <button name = "origin" class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+          
+            <div class="image-upload-wrap">
+              <input class="file-upload-input" type="file" name="origin" accept="image/*" required id="id_origin" onchange="readURL(this);"/>
+              <div class="drag-text">
+                <h3>Drag and drop a file or select add Image</h3>
+              </div>
+            </div>
+            <div class="file-upload-content">
+              <img class="file-upload-image" src="#" alt="your image" />
+              <div class="image-title-wrap">
+                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+              </div>
+            </div>
+          </div> 
+          <div class="d-flex justify-content-center">
+            <button class="btn" type="submit">Upload</button>
+          </div>
+    </form>
+</div> 
+
+
+
 {% endblock %}

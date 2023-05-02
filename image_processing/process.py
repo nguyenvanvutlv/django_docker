@@ -4,9 +4,8 @@ import base64
 from scipy.spatial.distance import cdist
 
 class ProcessImage():
-    def __init__(self, image, action):
+    def __init__(self, image):
         self.image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        self.action = action
         
         
     def brightness(self, alpha=1, C = 30):

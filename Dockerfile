@@ -1,27 +1,31 @@
 FROM python:alpine3.17
 
-WORKDIR /django_project
+WORKDIR /usr/src/django_project
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 RUN apk update
-RUN apk add gcc
 RUN pip3 install --upgrade pip
+
+RUN apk add --no-cache --virtual .build-deps gcc g++ build-base freetype-dev libpng-dev openblas-dev py3-scipy
+RUN pip3 install numpy scipy
+
 RUN pip3 install --extra-index-url https://alpine-wheels.github.io/index numpy
 RUN pip3 install --extra-index-url https://alpine-wheels.github.io/index opencv-python
+RUN pip3 install --extra-index-url https://alpine-wheels.github.io/index Pillow
 
 # install dependencies
-RUN pip install --upgrade pip 
+RUN pip3 install --upgrade pip 
 COPY ./requirements.txt /requirements.txt
-RUN pip install -r /requirements.txt
+RUN pip3 install --no-cache-dir -r /requirements.txt
 
 
 COPY . /django_project
 
 RUN adduser -D user
-RUN chown -R user:user /django_project
+RUN chown -R user:user /usr/src/django_project
 # USER user
 EXPOSE 8000
 
