@@ -4,6 +4,7 @@ WORKDIR /user/src/django_project
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 COPY ./requirements.txt ./
 RUN pip3 install --no-cache-dir -r requirements.txt
