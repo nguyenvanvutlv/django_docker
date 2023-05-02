@@ -20,7 +20,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path("", img_p.home, name="session"),
     path("brightness/", img_p.brightness, name="brightness"),
-    path("contrast/", img_p.contrast, name="contrast"),
+    path("edges/", img_p.edges, name="edges"),
     path("kmeans/", img_p.kmeans, name="kmeans"),
     path("upload/", img_p.upload, name="upload"),
     path("login/", img_p.login_function, name="login_function"),

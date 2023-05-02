@@ -11,7 +11,7 @@ import cv2
 import base64
 from PIL import Image
 from image_processing.models import ImageUpload
-from image_processing.process import ProcessImage, Kmeans
+from image_processing.process import ProcessImage, Kmeans, Edges
 from io import BytesIO
 # for processing image
 
@@ -83,15 +83,15 @@ def upload(request):
     content = ""
     if request.method == "POST":
         submitted_form = UploadForm(request.POST, request.FILES)
-        # print(request.FILES)
-        # print(request.POST)
-        # print(submitted_form)
-        # submitted_form.fields['author'] = 'root'
+        # return id user -> change to username
         user = request.session['_auth_user_id']
         username = User.objects.filter(id = user)[0].get_username()
-        print("USERNAME: ", username)
-        print("AUTHOR, ", request.POST['author'])
+        
+        # get author has upload image
+        Author = ImageUpload.objects.filter(author= str(username))
         if username == request.POST['author']:
+            if len(Author) > 0:
+                Author[0].delete()
             if submitted_form.is_valid():
                 submitted_form.save()
         else:
@@ -157,10 +157,36 @@ def brightness(request):
 
 
 @login_required
-def contrast(request):       
-    template = loader.get_template("images/contrast.html")    
-    context = {
+def edges(request):  
+    
+    # lấy tên người dùng ở phiên đăng nhập hiện tại
+    user = request.session['_auth_user_id']
+    username = User.objects.filter(id = user)[0].get_username()
+    Author = ImageUpload.objects.filter(author= username)
+    frame_b64 = ""
+    frame = ""
+    origin_image = ""
+    is_image = False
+    if len(Author) > 0:
+        # get image from database
+        frame = cv2.imread(Author[0].origin.url[1:])
+        frame = cv2.resize(frame, (512, 512))
+        origin_image = frame.copy()
+        frame_b64 = Edges(frame).process()
+        is_image = True
         
+        
+        _, frame_buff = cv2.imencode('.jpg', origin_image)
+        origin_image = base64.b64encode(frame_buff).decode('utf-8')
+        
+         
+         
+    
+    template = loader.get_template("images/edges.html")    
+    context = {
+        "origin_image" : origin_image,
+        "frame_b64" : frame_b64,
+        "is_image"  : is_image
     }
       
     return HttpResponse(template.render(context, request))

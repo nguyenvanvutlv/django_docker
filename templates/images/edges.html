@@ -1,0 +1,33 @@
+{% extends 'images/base.html' %}
+
+{% load static %}
+
+{% block title %}Tìm biên{% endblock %}
+
+{% block nav2 %}<a class="nav-link active" aria-current="page" href={% url 'edges' %}>Tìm biên</a>{% endblock %}
+
+
+{% block content %}
+
+<div class="d-flex justify-content-center">
+
+    <div class='container text-center mt-3'>
+        <img
+            src = "data:image/jpg;base64, {{ origin_image }}"
+            class="img-thumbnail"
+            alt="Bạn chưa tải ảnh lên cơ sở dữ liệu hoặc bị lỗi"
+        />
+    </div>
+
+    <div class='container text-center mt-3'>
+        <img
+            src = "data:image/jpg;base64, {{ frame_b64 }}"
+            class="img-thumbnail"
+            alt="Bạn chưa tải ảnh lên cơ sở dữ liệu hoặc bị lỗi"
+        />
+    </div>
+
+</div>
+
+
+{% endblock %}

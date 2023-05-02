@@ -175,10 +175,10 @@
         <div class="file-upload">
             <input name="author" maxlength="150" required id="id_author" class="form-control" placeholder="Author" required="" autofocus="" type="text">
             </br>
-            <button name = "origin" class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+            <button name = "origin_btn" class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
           
             <div class="image-upload-wrap">
-              <input class="file-upload-input" type="file" name="origin" accept="image/*" required id="id_origin" onchange="readURL(this);"/>
+              <input name="origin" class="file-upload-input" type="file"  accept="image/*" required id="id_origin" onchange="readURL(this);"/>
               <div class="drag-text">
                 <h3>Drag and drop a file or select add Image</h3>
               </div>
