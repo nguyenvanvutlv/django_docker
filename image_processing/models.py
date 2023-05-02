@@ -32,3 +32,12 @@ class ImageUpload(models.Model):
     #     self.process.save(str(self.process), ContentFile(img_png), save=False)
 
     #     super().save(*args, **kwargs)
+    
+class StoreSession(models.Model):
+    author = models.CharField(max_length= 150, primary_key=True)
+    session_key  = models.CharField(max_length= 40)
+    
+    
+    def __str__(self):
+        return self.author
+    
