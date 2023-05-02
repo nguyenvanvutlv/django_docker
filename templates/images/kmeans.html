@@ -66,11 +66,13 @@
 <div class='container'>
     <form method='post' class="form-signin text-center">
         {% csrf_token %}
+        {% if is_image %}
         <label for="customRange" class="form-label" id="rangeValue1" name="show_range">K = {{current_k}}</label>
         <div>
             <input class="range" type="range" name = "k_centroids" value={{current_k}} min="1" max="10" onChange="rangeSlideK(this.value)" onmousemove="rangeSlideK(this.value)" />
         </div>
-        <button class="btn mt-20 w-50" type="submit">Đổi</button>
+            <button class="btn mt-20 w-50" type="submit">Đổi</button>
+        {% endif %}
     </form>
 </div> 
 {% endblock %}

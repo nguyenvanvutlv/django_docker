@@ -44,11 +44,10 @@
 
 {% block js %}
 <script type="text/javascript">
-
-    function rangeSlide(value) {
+    function rangeSlidecurrent_range(value) {
         document.getElementById('rangeValue1').innerHTML = value;
     };
-    function rangeAlpha(value) {
+    function rangeSlidecurrent_alpha(value) {
         document.getElementById('rangeValue2').innerHTML = value;
     };
 </script>
@@ -58,28 +57,29 @@
 
 
 {% block content %}
-
-<div class='container text-center d-flex flex-row mt-4' style="width: 800px">
-
-    <div class="img">
-        <img src="data:image/jpg;base64, {{brightness}}" class="rounded" alt="..." width = '300' />
-    </div>
-    <div class="text-center w-50 ml-3">
-        <form method='post' class="form-signin text-center">
-            {% csrf_token %}
-            
-            <label for="customRange" class="form-label" id="rangeValue1" name="show_range">{{current_range}}</label>
-            <div>
-                <input class="range" type="range" name = "rangeValue_in" value={{current_range}} min="-255" max="255" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)" />
-            </div>
-            <label for="customRange" class="form-label" id="rangeValue2" name="show_alpha">{{current_alpha}}</label>
-            <div>
-                <input class="range" type="range" name = "alpha" value={{current_alpha}} min="1" max="10" onChange="rangeAlpha(this.value)" onmousemove="rangeAlpha(this.value)" />
-            </div>
-            <button class="btn mt-20 w-50" type="submit">Đổi</button>
-        </form>
-
-    </div>
-
+<div class='container text-center mt-3'>
+    <img
+        {% comment %} src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" {% endcomment %}
+        {% comment %} src = "{% static 'image/default.webp' %}" {% endcomment %}
+        src = "data:image/jpg;base64, {{brightness}}"
+        class="img-thumbnail"
+        alt="Bạn chưa tải ảnh lên cơ sở dữ liệu"
+    />
 </div>
+<div class='container'>
+    <form method='post' class="form-signin text-center">
+        {% csrf_token %}
+        {% if is_image %}
+        <label for="customRange" class="form-label" id="rangeValue1" name="show_range_output">{{current_range}}</label>
+        <div>
+            <input class="range" type="range" name = "rangeValue_in" value={{current_range}} min="-255" max="255" onChange="rangeSlidecurrent_range(this.value)" onmousemove="rangeSlidecurrent_range(this.value)" />
+        </div>
+        <label for="customRange" class="form-label" id="rangeValue2" name="show_alpha_output">{{current_alpha}}</label>
+        <div>
+            <input class="range" type="range" name = "show_alpha" value={{current_alpha}} min="1" max="10" onChange="rangeSlidecurrent_alpha(this.value)" onmousemove="rangeSlidecurrent_alpha(this.value)"/>
+        </div>
+        <button class="btn mt-20 w-50" type="submit">Đổi</button>
+        {% endif %}
+    </form>
+</div> 
 {% endblock %}

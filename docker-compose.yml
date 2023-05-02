@@ -6,7 +6,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - .:/django_project
+      - .:/usr/src/django_project
     image: app:django_project
     container_name: django_container
     command: python manage.py runserver 0.0.0.0:8000
