@@ -85,7 +85,7 @@ DATABASES = {
 - Tìm biên bằng ngưỡng tự động và sobel kernel
 - Phân vùng ảnh (Kmeans)
 
-Các chương trình này nằm trong file [process.py](image_processing\process.py) ở thư mục image_processing, các thư viện dùng trong phần này đó là:
+Các chương trình này nằm trong file [process.py](image_processing/process.py) ở thư mục image_processing, các thư viện dùng trong phần này đó là:
 
 - Pillow, opencv-python: đọc ảnh
 - numpy, scipy: tính toán các phép tính trên ma trận, vector
