@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+
+{% load static %}
+
+{% block title %}Bài viết{% endblock %}
+
+{% block style_add %} <link href={% static 'css/blog/article.css' %} rel="stylesheet"> {% endblock %}
+
+{% block js_add %} <script src={% static 'js/blog/article.js' %}></script> {% endblock %}
+
+{% block active1 %}  <a class="nav-link" aria-current="page" href="{% url 'home_blog' %}">Trang chủ</a> {% endblock %}
+
+{% block active2 %} <a class="nav-link active" href="{% url 'article_blog' %}">Bài viết</a> {% endblock %}
+
+{% block content %}
+    
+{% endblock %}
