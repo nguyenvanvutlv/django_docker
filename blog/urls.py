@@ -18,6 +18,8 @@ from . import views as blog
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path("", blog.home_blog, name="home_blog"),
+    path("", blog.HomeView.as_view(), name="home_blog"),
     path('article/', blog.article_blog, name= "article_blog"),
+    # path('article/', blog.HomeView.as_view(), name = "article_blog"),
+    path('article/<str:article_id>/', blog.article_blogid, name= "article_blogid"),
 ]

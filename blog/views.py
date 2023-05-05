@@ -1,10 +1,22 @@
 from django.shortcuts import render, redirect
+from django.views.generic import ListView
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 
 # models
-from blog.models import Reporter
+from blog.models import Reporter, Article
 from django.contrib.auth.models import User
+
+
+
+class HomeView(ListView):
+    model = Article
+    template_name = "blog/index.html"
+    context_object_name = "articles"
+    # paginate_by = 2
+
+
+
 
 
 
@@ -16,7 +28,7 @@ def home_blog(request):
     # reporter.un_follow(id_reporter = "1")
 
     
-    template = loader.get_template("blog/base.html")
+    template = loader.get_template("blog/index.html")
     context = {
         "notification" : 1
     }
@@ -26,9 +38,26 @@ def home_blog(request):
 
 def article_blog(request):    
     
+    
+    objects = Article.objects.all()
+    # print(objects)
+    
     template = loader.get_template("blog/Article.html")
     context = {
-        "notification" : 1
+        "objects" : objects
+    }
+      
+    return HttpResponse(template.render(context, request))
+
+def article_blogid(request, article_id):    
+    
+    
+    objects = Article.objects.filter(id= article_id)[0]
+    # print(objects)
+    
+    template = loader.get_template("blog/content_article.html")
+    context = {
+        "objects" : objects
     }
       
     return HttpResponse(template.render(context, request))

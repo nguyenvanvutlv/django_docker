@@ -1,0 +1,38 @@
+{% extends 'blog/base.html' %}
+
+{% load static %}
+
+
+{% block title %}Bài viết{% endblock %}
+
+{% block content %}
+
+<div class='container mt-5'>
+    <div class="row">
+        <div class="author col-sm-2">{{objects.reporter.reporter_id.last_name}}  {{objects.reporter.reporter_id.first_name}}</div>
+        <div class="b col-sm-6">
+
+            <div class='container'>
+                <h1> {{objects.title}} </h1>               
+            </div>
+
+            <div class='container mt-5'>
+                <md-block>
+                    {{objects.content}}
+                </md-block>
+            </div>
+        </div>
+        <div class="reference col-sm-1">Mục lục</div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block extends_js %}
+<script type="module" src="https://md-block.verou.me/md-block.js"></script>    
+<script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js">
+</script>
+{% endblock extends_js %}
+

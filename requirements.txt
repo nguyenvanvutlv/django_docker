@@ -4,3 +4,6 @@ Pillow
 opencv-python
 scipy
 numpy
+django-mdeditor
+django-admin-interface
+django-jet
