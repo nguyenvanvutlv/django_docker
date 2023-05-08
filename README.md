@@ -60,7 +60,7 @@ DATABASES = {
 }
 ```
 
-### version 2: update dự kiến sẽ dùng MySQL
+### version 2: 8/5/2023
 
 ``` python
 DATABASES = {

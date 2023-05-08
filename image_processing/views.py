@@ -34,8 +34,8 @@ from django.contrib.auth import authenticate, login, logout # for authen login
 
 
 def login_function(request):
-
-
+    
+    error = False
     if request.method == 'POST':
         # get username, password
         username = request.POST['Username']
@@ -53,12 +53,14 @@ def login_function(request):
                 return redirect("/" + groups_user.group_name + "/")
             elif groups_user.group_name == "image_processing":
                 return redirect('/')
+        else:
+            error = True
 
 
     # when login faile or user access this website
     template = loader.get_template("images/login_imgp.html")
     context = {
-        
+        "errors" : error
     }
     return HttpResponse(template.render(context, request))       
     

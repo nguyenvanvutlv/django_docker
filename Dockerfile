@@ -19,6 +19,7 @@ EXPOSE 8000
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
 
 
+
 # FROM python:alpine3.17
 
 # WORKDIR /usr/src/django_project
