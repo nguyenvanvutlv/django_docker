@@ -4,3 +4,7 @@ Pillow
 opencv-python
 scipy
 numpy
+django-mdeditor
+markdown
+django-markdownx
+mysqlclient

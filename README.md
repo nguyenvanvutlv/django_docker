@@ -79,7 +79,19 @@ DATABASES = {
 
 ## Dự án
 
+### Tài khoản quản trị viên
+
+- username: administrator
+- password: Admin@123
+
 ### Image_processing (Xử lý ảnh cơ bản)
+
+#### Tài khoản dùng để truy cập vào image_processing mặc định
+
+- username: img_root
+- password: rootABC@123
+
+#### Nội dung
 
 - Tăng giảm độ sáng
 - Tìm biên bằng ngưỡng tự động và sobel kernel
@@ -97,3 +109,15 @@ Các hàm được viết thủ công chỉ dùng thư viện tính toán
 
 
 ### Machine_learning [Update]
+
+
+### BLOG Cá nhân [Update]
+
+#### Tài khoản truy cập vào blog mặc định
+
+- username: blog_personal
+- password: blogABC@123
+
+#### Nội dung
+
+- Cho phép người dùng đăng tải các bài viết, thảo luận liên quan đến nhiều chủ đề khác nhau

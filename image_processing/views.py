@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+
+from blog.models import Groups_User
+
 
 # for processing image
 from django.core.files.base import ContentFile
@@ -32,7 +35,7 @@ from django.contrib.auth import authenticate, login, logout # for authen login
 
 def login_function(request):
 
-    
+
     if request.method == 'POST':
         # get username, password
         username = request.POST['Username']
@@ -40,12 +43,16 @@ def login_function(request):
         
         # check user login [Username, Password] from database
         user = authenticate(username= username, password= password)
-        
+        # print(user)
         if user is not None: 
             # save sessionid to cookie about user
             login(request, user)
-            return redirect('/')
-            
+            groups_user = Groups_User.objects.filter(user= user)[0]
+            # print(groups_user)
+            if groups_user.group_name != "image_processing":
+                return redirect("/" + groups_user.group_name + "/")
+            elif groups_user.group_name == "image_processing":
+                return redirect('/')
 
 
     # when login faile or user access this website
@@ -78,7 +85,12 @@ def change_brightness(origin, img, alpha, C):
 
 
 @login_required
-def upload(request):       
+def upload(request):   
+    user = request.session['_auth_user_id']
+    user = User.objects.filter(id = user)[0]  
+    groups = Groups_User.objects.filter(user= user)
+    if groups.group_name != "image_processing":
+        redirect("/" + groups.group_name + "/")  
     alert = False
     content = ""
     if request.method == "POST":
@@ -89,8 +101,8 @@ def upload(request):
         # submitted_form.fields['author'] = 'root'
         user = request.session['_auth_user_id']
         username = User.objects.filter(id = user)[0].get_username()
-        print("USERNAME: ", username)
-        print("AUTHOR, ", request.POST['author'])
+        # print("USERNAME: ", username)
+        # print("AUTHOR, ", request.POST['author'])
         if username == request.POST['author']:
             if submitted_form.is_valid():
                 submitted_form.save()
@@ -109,7 +121,12 @@ def upload(request):
 
 
 @login_required
-def home(request):    
+def home(request):   
+    user = request.session['_auth_user_id']
+    user = User.objects.filter(id = user)[0]  
+    groups = Groups_User.objects.filter(user= user)[0]
+    if groups.group_name != "image_processing":
+        redirect("/" + groups.group_name + "/")  
     # print(request.session.keys())
     # print(request.session.items())  
     # request.session.set_expiry(60)  
@@ -123,6 +140,11 @@ def home(request):
 
 @login_required
 def brightness(request):   
+    user = request.session['_auth_user_id']
+    user = User.objects.filter(id = user)[0]  
+    groups = Groups_User.objects.filter(user= user)
+    if groups.group_name != "image_processing":
+        redirect("/" + groups.group_name + "/") 
     # get current user are login this session
     user = request.session['_auth_user_id']
     username = User.objects.filter(id = user)[0].get_username()
@@ -157,7 +179,12 @@ def brightness(request):
 
 
 @login_required
-def contrast(request):       
+def contrast(request): 
+    user = request.session['_auth_user_id']
+    user = User.objects.filter(id = user)[0]  
+    groups = Groups_User.objects.filter(user= user)
+    if groups.group_name != "image_processing":
+        redirect("/" + groups.group_name + "/")       
     template = loader.get_template("images/contrast.html")    
     context = {
         
@@ -168,7 +195,12 @@ def contrast(request):
 
 
 @login_required
-def kmeans(request):    
+def kmeans(request):  
+    user = request.session['_auth_user_id']
+    user = User.objects.filter(id = user)[0]  
+    groups = Groups_User.objects.filter(user= user)
+    if groups.group_name != "image_processing":
+        redirect("/" + groups.group_name + "/")   
     # get current user are login this session
     user = request.session['_auth_user_id']
     username = User.objects.filter(id = user)[0].get_username()

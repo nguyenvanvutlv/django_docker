@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+
+{% block exntends_css %}
+<link 
+    href={% static 'css/blog/3-col.css' %}
+    rel = "stylesheet"
+>
+{% endblock exntends_css %}
+{% block exntends_css_content %}{% endblock exntends_css_content %}
+
+{% block content %}
+<div class='container' style="max-width: 1500px!important;">
+    <div class='row'>
+        <div class='nav-bar col-navbar'>{% block col1 %}{% endblock %}</div>
+        <div class='col-12 col-lg-8 pt-5 px-4 px-md-5'>{% block col2 %}{% endblock %}</div>
+        <div class='d-none col-navbar2 d-lg-block col-lg-3 pt-5'>{% block col3 %}{% endblock %}</div>
+    </div>
+</div>
+
+{% endblock %}

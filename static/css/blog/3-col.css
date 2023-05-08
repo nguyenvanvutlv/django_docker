@@ -1,0 +1,16 @@
+@media only screen and (min-width: 992px) {
+    .col-navbar{
+        flex: 0 0 80px;
+        display: flex;
+        justify-content: center;
+        border-right: 1px solid #dee2e6;
+        height: 100vh;
+    }
+    .col-navbar2{
+        flex: 0 0 80px;
+        display: flex;
+        justify-content: center;
+        border-left: 1px solid #dee2e6;
+        height: 100vh;
+    }
+}
