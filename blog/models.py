@@ -5,8 +5,6 @@ from django.contrib.auth.models import User
 
 import numpy as np
 from datetime import date
-# markdown
-from mdeditor.fields import MDTextField
 
 # Create your models here.
 # object_1.class_name.add(object_2) -> many to many
@@ -90,7 +88,7 @@ class Article(models.Model):
     
     
     class Meta:
-        ordering = ['title']
+        ordering = ['-pub_date']
     
     
 class Commented(models.Model):
@@ -106,3 +104,12 @@ class Commented(models.Model):
     def __str__(self):
         print(self.article.types_blog)
         return self.reporter.__str__() + " Đã " + self.article.types_blog + " " + self.article.__str__()
+    
+    
+    
+class Groups_User(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    group_name = models.CharField(max_length= 20)
+    
+    def __str__(self):
+        return self.group_name

@@ -1,0 +1,147 @@
+{% extends 'blog/base.html' %}
+
+{% load static %}
+
+
+
+{% block title %}Tạo bài viết mới{% endblock %}
+
+{% block exntends_css %}
+<link rel="stylesheet" href={% static 'css/blog/user/user.css' %} />
+{% endblock exntends_css %}
+
+
+{% block content %}
+{% include 'blog/nav_bar.html' %}
+
+
+{% comment %} 
+
+input, type="text", name = title, maxlength="100", required
+input, type="text", name="pub_date", required
+textarea, name="content/tag", cols="40", rows="10", required
+      <select name="types_blog" id="id_types_blog">
+  <option value="trả lời" selected>hỏi</option>
+
+  <option value="bình luận">đăng bài viết</option>
+
+</select>
+{% endcomment %}
+
+
+
+
+<div class="row g-0">
+  <div class="col-sm-6 col-md-5">
+    <form class="form-signin" method="POST">
+      <h1 class="h3 mb-3 font-weight-normal">Bài viết</h1>
+      {% csrf_token %}
+      <div class='mt-4'>
+        <label class="form-label" for="textAreaExample">Tiêu đề</label>
+        <input name="title" id="inputTitle" maxlength="100" class="form-control" placeholder="" required value="{{title}}" autofocus="" type="text" onChange="markdown()">
+      </div>
+      <div class="mt-4">
+        <label class="form-label" for="textAreaExample">Ngày phát hành</label>
+        <input name="pub_date" id="inputPubDate" class="form-control" placeholder="" required value="{{pub_date}}" autofocus="" type="text" onChange="markdown()">
+      </div>
+    
+      <div class="form-outline mt-4">
+        <label class="form-label" for="textAreaExample">Nội dung</label>
+        <textarea name= "content" class="form-control" id="textAreaExample1" cols="40" rows="10" value="{{content}}" onChange="markdown()"></textarea>
+      </div>
+
+      <div class="form-outline mt-4">
+        <label class="form-label" for="textAreaExample">Tags</label>
+        <textarea name= "tags" class="form-control" id="textAreaExample1" cols="40", rows="10" value="{{tags}}" onChange="markdown()"></textarea>
+      </div>
+
+      <div class='mt-4'>
+        <label class="form-label" for="textAreaExample">Kiểu</label>
+        <select  name="types_blog" class="form-select" aria-label="Default select example">
+          <option  value="trả lời" {% if types_blog == 'trả lời'%}selected{% endif %}>hỏi</option>
+          <option  value="bình luận" {% if types_blog == 'bình luận'%}selected{% endif %}>đăng bài viết</option>
+        </select>
+      </div>
+
+      <div class='mt-4'>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Tạo</button>
+      </div>
+    </form>
+  </div>
+  <div class="col-6 col-md-7">
+
+
+
+
+    <div class="card output_card mt-4">
+      <div class="card-body">
+
+        {% if alert %}
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+              <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+              </symbol>
+              <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+              </symbol>
+              <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </symbol>
+            </svg>
+            
+
+            {% if status == 1 %}
+              <div class="alert alert-success d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                <div>
+                  {{alert}}
+                </div>
+              </div>
+            {% elif status == 2 %}
+              <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                <div>
+                  {{alert}}
+                </div>
+              </div>
+            {% endif %}
+        {% else %}
+          <div class='blogger center mx-auto' style="max-width: 683px">
+            <div class='text-muted' id="author" >{{usename}}</div>
+            <div class='text-muted' id="pub_date_">Ngày phát hành</div>
+            <h1 class="fw-bold pb-3" id="title">Tiêu đề</h1>
+            <p id='out'>Nội dung</p>
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+{% endblock %}
+
+{% block extends_js %}
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src={% static 'js/blog/user/user.js' %}></script>
+<script>
+  function markdown() {
+    document.getElementById('title').innerHTML = marked.parse(document.getElementById('inputTitle').value);
+    document.getElementById('pub_date_').innerHTML = marked.parse(document.getElementById('inputPubDate').value);
+    document.getElementById('out').innerHTML = marked.parse(" " + document.getElementById('textAreaExample1').value);
+  };
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js">
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/mathtex-script-type.min.js" defer></script>
+{% endblock extends_js %}
+

@@ -1,33 +1,39 @@
-{% extends 'blog/base.html' %}
-
+{% extends 'blog/3-col-template.html' %}
 {% load static %}
+{% load markdown_extras %}
+
+{% block exntends_css_content %}
+<link 
+    href={% static 'css/blog/content-article.css' %}
+    rel = "stylesheet"
+>
+{% endblock exntends_css_content %}
 
 
-{% block title %}Bài viết{% endblock %}
+{% block col1 %}
+{% include 'blog/second-navbar.html' %}
+{% endblock %}
 
-{% block content %}
 
-<div class='container mt-5'>
-    <div class="row">
-        <div class="author col-sm-2">{{objects.reporter.reporter_id.last_name}}  {{objects.reporter.reporter_id.first_name}}</div>
-        <div class="b col-sm-6">
+{% block col2 %}
 
-            <div class='container'>
-                <h1> {{objects.title}} </h1>               
-            </div>
 
-            <div class='container mt-5'>
-                <md-block>
-                    {{objects.content}}
-                </md-block>
-            </div>
-        </div>
-        <div class="reference col-sm-1">Mục lục</div>
-    </div>
+<div class='blogger center mx-auto' style="max-width: 683px">
+    <div class='text-muted'>{{objects.reporter.reporter_id.username}}</div>
+    <div class='text-muted'>{{objects.pub_date}}</div>
+    <h1 class="fw-bold pb-3">{{objects.title}}</h1>
+    {% comment %} <md-block> {% endcomment %}
+    {{objects.content | markdown | safe }}
+    {% comment %} </md-block> {% endcomment %}
 </div>
 
-
 {% endblock %}
+
+
+{% block col3 %}
+Các bài viết liên quan
+{% endblock %}
+
 
 {% block extends_js %}
 <script type="module" src="https://md-block.verou.me/md-block.js"></script>    

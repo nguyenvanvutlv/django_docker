@@ -18,8 +18,17 @@ from . import views as blog
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    
+    # trang chủ
     path("", blog.HomeView.as_view(), name="home_blog"),
-    path('article/', blog.article_blog, name= "article_blog"),
-    # path('article/', blog.HomeView.as_view(), name = "article_blog"),
-    path('article/<str:article_id>/', blog.article_blogid, name= "article_blogid"),
+    # tạo bài viết mới
+    path('new/', blog.write_article, name= "write_article"),
+    # xem bài viết cụ thể
+    path('view/<str:article_id>/', blog.article_blogid, name= "article_blogid"),
+    # xem danh sách các bài viết
+    path('view_article/', blog.article_blog, name= "article_blog"),
+    # xem danh sách các câu hỏi
+    path('view_question/', blog.question_blog, name= "question_blog"),
+    # đăng xuất
+    path("logout/", blog.logout_function, name="logout_function"),
 ]

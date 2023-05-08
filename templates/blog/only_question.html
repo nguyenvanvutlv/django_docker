@@ -13,12 +13,13 @@
     <div class='row'>
         <div class='col-12 col-lg-8'>
             {% for article in articles %}
+                {% if article.types_blog == 'bình luận' %}
                 <a href="/blog/view/{{ article.id }}/" class="text-decoration-none infscroll">
                     <div class='card border-0 pb-3 pb-sm-5'> 
                         <div class='row'>
                             <div class='col-8'>
                                 <div class='card-body p-0'>
-                                    <div class="pb-2 text-body infscroll-author">{{article.reporter}} {% if article.types_blog == 'trả lời' %}đã đặt câu hỏi{% else%}đã đăng bài viết{% endif %}</div>
+                                    <div class="pb-2 text-body infscroll-author">{{article.reporter}}</div>
                                     <h1 class="mb-1 text-body fw-bold" >{{article.title|truncatechars:50}}</h1>
 
                                     {% for tag in article.show_tag %}
@@ -35,6 +36,7 @@
                     </div>
                 </a>
                 </br>
+                {% endif %}
             {% endfor %}
         </div>
         <div class="d-none d-lg-block col-4">
