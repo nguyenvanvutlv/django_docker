@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'image_processing.apps.ImageProcessingConfig',
     'blog.apps.BlogConfig',
     'mdeditor',
+    'markdown',
 ]
 
 MIDDLEWARE = [
@@ -67,10 +68,10 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
-            # 'libraries':{
-            #     'markdown_extras': 'system.templatetags.markdown_extras',
+            'libraries':{
+                'markdown_extras': 'system.templatetags.markdown_extras',
                 
-            #     }
+                }
         },
     },
 ]

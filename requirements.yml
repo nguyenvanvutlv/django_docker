@@ -8,4 +8,11 @@ dependencies:
   - opencv
   - scipy
   - markdown
+  - webdriver-manager
+  - selenium
+  - pip:
+      - numpy
+      - django-mdeditor
+      - django-markdownx
+      - mysqlclient
 prefix: C:\Users\vu\anaconda3\envs\dp

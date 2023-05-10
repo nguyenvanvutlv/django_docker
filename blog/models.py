@@ -112,4 +112,4 @@ class Groups_User(models.Model):
     group_name = models.CharField(max_length= 20)
     
     def __str__(self):
-        return self.group_name
+        return self.user.get_username() + " GROUPS[" + self.group_name + "]"

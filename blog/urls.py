@@ -17,10 +17,14 @@ from django.urls import path
 from . import views as blog
 from django.contrib.auth import views as auth_views
 
+app_name = "blog"
+
 urlpatterns = [
     
     # trang chủ
     path("", blog.HomeView.as_view(), name="home_blog"),
+    # quản lý bài viết
+    path('edit/<str:id>', blog.edit_article, name= "edit_article"),
     # tạo bài viết mới
     path('new/', blog.write_article, name= "write_article"),
     # xem bài viết cụ thể

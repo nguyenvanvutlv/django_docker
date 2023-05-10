@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 
-from blog.models import Groups_User
+from blog.models import Groups_User, Reporter
 
 
 # for processing image
@@ -28,9 +28,70 @@ from django.contrib.auth import authenticate, login, logout # for authen login
 # from django.contrib.auth import logout
 # Create your views here.
 
+def process_name(name: str):
+    try:
+        name = name.strip()
+        name = name.split()
+        first, last = " ".join(name[:-1]), name[-1]
+    except Exception as error:
+        return (False, error)
+    # print(first, last)
+    return first, last
 
 
 
+def register(request):
+    errors = None
+    if request.method == "POST":
+        # print(request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        rpassword = request.POST['rpassword']
+        name = request.POST['name']
+        email = request.POST['email']
+        
+        phone = request.POST['phone']
+        address = request.POST['address']
+        company = request.POST['company']
+        gender = request.POST['gender']
+        # print(phone, address, company, gender)
+        
+        
+        if rpassword == password:
+            pass
+        else:
+            errors = "Mật khẩu nhập lại không đúng"
+        
+        first_result, last_result = process_name(name)
+        if first_result != False:
+            try:
+                _users = User(username= username,
+                        email= email, 
+                        first_name= last_result,
+                        last_name= first_result)
+                _users.set_password(raw_password= password)
+                _users.save()
+                new_userblog = Groups_User(user= _users, group_name= "blog")
+                new_userblog.save()
+                
+                
+                new_reporter = Reporter(reporter_id= _users,
+                                        gender= gender,
+                                        phone_number= phone,
+                                        address= address,
+                                        company= company)
+                new_reporter.save()
+                errors = True
+                
+            except Exception as error:
+                errors = error
+        else:
+            errors = "Tên không đúng"
+    template = loader.get_template("images/register.html")
+    context = {
+        "errors": errors
+    }
+    return HttpResponse(template.render(context, request)) 
 
 
 def login_function(request):
@@ -76,9 +137,6 @@ def logout_function(request):
 
 
 
-
-
-
 def change_brightness(origin, img, alpha, C):
     image = ProcessImage(origin).brightness(alpha, C)
     ret, frame_buff = cv2.imencode('.jpg', image)
@@ -90,7 +148,7 @@ def change_brightness(origin, img, alpha, C):
 def upload(request):   
     user = request.session['_auth_user_id']
     user = User.objects.filter(id = user)[0]  
-    groups = Groups_User.objects.filter(user= user)
+    groups = Groups_User.objects.filter(user= user)[0]
     if groups.group_name != "image_processing":
         redirect("/" + groups.group_name + "/")  
     alert = False
@@ -128,7 +186,7 @@ def home(request):
     user = User.objects.filter(id = user)[0]  
     groups = Groups_User.objects.filter(user= user)[0]
     if groups.group_name != "image_processing":
-        redirect("/" + groups.group_name + "/")  
+        return redirect("/" + groups.group_name + "/")  
     # print(request.session.keys())
     # print(request.session.items())  
     # request.session.set_expiry(60)  
@@ -144,9 +202,9 @@ def home(request):
 def brightness(request):   
     user = request.session['_auth_user_id']
     user = User.objects.filter(id = user)[0]  
-    groups = Groups_User.objects.filter(user= user)
+    groups = Groups_User.objects.filter(user= user)[0]
     if groups.group_name != "image_processing":
-        redirect("/" + groups.group_name + "/") 
+        return redirect("/" + groups.group_name + "/") 
     # get current user are login this session
     user = request.session['_auth_user_id']
     username = User.objects.filter(id = user)[0].get_username()
@@ -164,9 +222,10 @@ def brightness(request):
     if len(Author) > 0:
         # get image from database
         frame = cv2.imread(Author[0].origin.url[1:])
-        frame = cv2.resize(frame, (512, 512))
-        frame_b64 = change_brightness(frame, Author[0], current_alpha, current_range)
-        is_image = True
+        if frame is not None:
+            frame = cv2.resize(frame, (512, 512))
+            frame_b64 = change_brightness(frame, Author[0], current_alpha, current_range)
+            is_image = True
     
     
     template = loader.get_template("images/brightness.html")    
@@ -184,9 +243,9 @@ def brightness(request):
 def contrast(request): 
     user = request.session['_auth_user_id']
     user = User.objects.filter(id = user)[0]  
-    groups = Groups_User.objects.filter(user= user)
+    groups = Groups_User.objects.filter(user= user)[0]
     if groups.group_name != "image_processing":
-        redirect("/" + groups.group_name + "/")       
+        return redirect("/" + groups.group_name + "/")       
     template = loader.get_template("images/contrast.html")    
     context = {
         
@@ -200,9 +259,9 @@ def contrast(request):
 def kmeans(request):  
     user = request.session['_auth_user_id']
     user = User.objects.filter(id = user)[0]  
-    groups = Groups_User.objects.filter(user= user)
+    groups = Groups_User.objects.filter(user= user)[0]
     if groups.group_name != "image_processing":
-        redirect("/" + groups.group_name + "/")   
+        return redirect("/" + groups.group_name + "/")   
     # get current user are login this session
     user = request.session['_auth_user_id']
     username = User.objects.filter(id = user)[0].get_username()
@@ -216,9 +275,10 @@ def kmeans(request):
     
     if len(Author) > 0:
         frame = cv2.imread(Author[0].origin.url[1:])
-        frame = cv2.resize(frame, (512, 512))
-        frame_b64 = Kmeans(image= frame, k_centroids= current_k, theta= 500, types= 'RGB').changeBGR2frameb64()
-        is_image = True
+        if frame is not None:
+            frame = cv2.resize(frame, (512, 512))
+            frame_b64 = Kmeans(image= frame, k_centroids= current_k, theta= 500, types= 'RGB').changeBGR2frameb64()
+            is_image = True
     
     
     template = loader.get_template("images/kmeans.html")    

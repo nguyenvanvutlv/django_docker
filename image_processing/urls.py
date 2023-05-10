@@ -17,6 +17,8 @@ from django.urls import path
 from . import views as img_p
 from django.contrib.auth import views as auth_views
 
+app_name = "image_processing"
+
 urlpatterns = [
     path("", img_p.home, name="session"),
     path("brightness/", img_p.brightness, name="brightness"),
@@ -25,5 +27,6 @@ urlpatterns = [
     path("upload/", img_p.upload, name="upload"),
     path("login/", img_p.login_function, name="login_function"),
     path("logout/", img_p.logout_function, name="logout_function"),
+    path("register/", img_p.register, name="register"),
     # path('logout/', auth_views.LogoutView.as_view(template_name='images/login_function.html'), name='logout'),
 ]
