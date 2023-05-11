@@ -1,0 +1,11 @@
+name: dp
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - django
+  - pillow
+  - opencv
+  - scipy
+  - markdown
+prefix: C:\Users\vu\anaconda3\envs\dp
