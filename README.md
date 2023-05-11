@@ -1,57 +1,86 @@
-# Dự án Django_docker
+# Môi trường Docker
 
+## Dockerfile
 
-## Cách chạy dự án
-### Chạy dự án từ github
+### Version 1.0.0
 
-``` bash
-# clone github về máy
-(env) $ git clone https://github.com/nguyenvanvutlv/django_docker.git
-(env) $ cd django_docker
+``` Dockerfile
+# Môi trường chạy
+FROM python:alpine3.17
+# Thư mục làm việc
+WORKDIR /usr/src/django_project
+# Các biến môi trường
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Chạy cài thư viện
+RUN apk update
+RUN pip3 install --upgrade pip
+RUN apk add --no-cache --virtual .build-deps gcc g++ build-base freetype-dev libpng-dev openblas-dev py3-scipy
+RUN pip3 install numpy scipy
+RUN pip3 install --extra-index-url https://alpine-wheels.github.io/index numpy
+RUN pip3 install --extra-index-url https://alpine-wheels.github.io/index opencv-python
+RUN pip3 install --extra-index-url https://alpine-wheels.github.io/index Pillow
+RUN pip3 install --upgrade pip 
+COPY ./requirements.txt /requirements.txt
+RUN pip3 install --no-cache-dir -r /requirements.txt
+
+# Sao chép thư mục của app vào thư mục làm việc
+COPY . /usr/src/django_project
+RUN adduser -D user
+RUN chown -R user:user /usr/src/django_project
+USER user
+EXPOSE 8000
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
 ```
 
-``` bash
-# cài đặt thư viện từ file requirements.txt
-(env) $ pip install -r requirements.txt
+### Version 2.0.1
+
+```Dockerfile
+# Môi trường
+FROM python:3.10-slim
+# Thư mục làm việc
+WORKDIR /user/src/django_project
+# Các biến môi trường
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+# Cài đặt thư viện
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+COPY ./requirements.txt ./
+RUN pip3 install --no-cache-dir -r requirements.txt
+# Sao chép thư mục ở máy vào thư mục làm việc
+COPY . /user/src/django_project
+
+RUN adduser user
+RUN chown -R user:user /user/src/django_project
+USER user
+EXPOSE 8000
+
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
 ```
 
-``` bash
-# chạy lệnh thực thi trên cơ sở dữ liệu
-(env) $ python manage.py makemigrations
-(env) $ python manage.py migrate
+## Docker-compose
+``` yml
+version: '3'
+
+services:
+  app:
+    build: .
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/usr/src/django_project
+    image: app:django_project
+    container_name: django_container
+    command: python manage.py runserver 0.0.0.0:8000
 ```
 
-``` bash
-# chạy dự án
-(env) $ python manage.py runserver [mặc định: 127.0.0.0:8000]
-```
+## Database
 
+### Version [1.0.0, 2.0.1]
 
-### Chạy dự án từ docker
-
-- Yêu cầu máy có docker, cài đặt tại đây [Docker](https://www.docker.com/)
-
-``` bash
-# Kéo docker container về máy
-$ docker pull toilavu/app:django_project
-```
-
-``` bash
-# chạy images
-$ docker run -dp 8000:8000 toilavu/app:django_project
-$ docker run toilavu/app:django_project
-```
-- truy cập http://localhost:8000/
-
-
------------------------------------------------------
-
-## Database (Cơ sở dữ liệu)
-
-### version 1: 2/5/2023
-
-- Sử dụng sqlite3 được hỗ trợ sẵn từ django
-``` python
+```python
+# sqlite3
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -60,64 +89,64 @@ DATABASES = {
 }
 ```
 
-### version 2: update dự kiến sẽ dùng MySQL
+## Mô tả
 
-``` python
+### Version 1.0.0
+
+<img src="demo/demo1.png" alt=""/>
+
+### Version 2.0.1
+
+<img src="demo/demo2.png" alt=""/>
+<img src="demo/demo3.png" alt=""/>
+<img src="demo/demo4.png" alt=""/>
+
+# Môi trường chạy từ file
+
+## Cách chạy (anaconda)
+
+``` bash
+# tải dự án về máy
+git clone https://github.com/nguyenvanvutlv/django_docker.git (base)
+
+cd django_project                                             (base)(main)
+
+# Chuyển sang nhánh blog do nhánh này đang ổn định nhất
+git checkout blog                                             (base)(blog)
+
+
+
+# Cài đặt môi trường
+conda create -n dp --file requirement.yml                     (base)(blog)
+conda activate dp                                             (dp)(blog)
+
+
+# Chạy dự án
+python manager.py runserver                                   (dp)(blog)
+```
+
+## Database
+
+### Version 1.0.0
+
+- Sử dụng sqlite3
+
+### Version 2.0.1
+
+- Sử dụng MySQL, cấu hình cài đặt MySQL Workbench 8.0 CE
+
+```python
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "haui_project",
-        "USER": "root",
-        "PASSWORD": "root",
+        "USERNAME" : "root",
+        "PASSWORD" : "root",
         "HOST": "127.0.0.1",
         "PORT": "3306",
+        'OPTIONS': {  
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
+        } ,
     }
 }
 ```
-
----------------------------------------
-
-## Dự án
-
-### Tài khoản quản trị viên
-
-- username: administrator
-- password: Admin@123
-
-### Image_processing (Xử lý ảnh cơ bản)
-
-#### Tài khoản dùng để truy cập vào image_processing mặc định
-
-- username: img_root
-- password: rootABC@123
-
-#### Nội dung
-
-- Tăng giảm độ sáng
-- Tìm biên bằng ngưỡng tự động và sobel kernel
-- Phân vùng ảnh (Kmeans)
-
-Các chương trình này nằm trong file [process.py](image_processing/process.py) ở thư mục image_processing, các thư viện dùng trong phần này đó là:
-
-- Pillow, opencv-python: đọc ảnh
-- numpy, scipy: tính toán các phép tính trên ma trận, vector
-- base64: dùng để hiển thị ảnh trên website
-
-```
-Các hàm được viết thủ công chỉ dùng thư viện tính toán
-```
-
-
-### Machine_learning [Update]
-
-
-### BLOG Cá nhân [Update]
-
-#### Tài khoản truy cập vào blog mặc định
-
-- username: blog_personal
-- password: blogABC@123
-
-#### Nội dung
-
-- Cho phép người dùng đăng tải các bài viết, thảo luận liên quan đến nhiều chủ đề khác nhau
