@@ -1,5 +1,13 @@
 # Môi trường Docker
 
+## Cách chạy
+
+```bash
+docker pull toilavu/app:django_project
+docker run -dp 8000:8000 toilavu/app:django_project
+docker run toilavu/app:django_project
+```
+
 ## Dockerfile
 
 ### Version 1.0.0
