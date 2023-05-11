@@ -15,19 +15,19 @@
             <a class="navbar-brand" href="#"> Xử lý ảnh</a>
             <ul class="nav nav-pills">
                 <li class="nav-item">
-                    {% block nav1 %}<a class="nav-link" href={% url 'brightness' %}>Độ sáng</a>{% endblock %}
+                    {% block nav1 %}<a class="nav-link" href={% url 'image_processing:brightness' %}>Độ sáng</a>{% endblock %}
                 </li>
                 <li class="nav-item">
-                    {% block nav2 %}<a class="nav-link" href={% url 'contrast' %}>Tương phản</a>{% endblock %}
+                    {% block nav2 %}<a class="nav-link" href={% url 'image_processing:contrast' %}>Tương phản</a>{% endblock %}
                 </li>
                 <li class="nav-item">
-                    {% block nav3 %}<a class="nav-link" href={% url 'kmeans' %}>Phân cụm</a>{% endblock %}
+                    {% block nav3 %}<a class="nav-link" href={% url 'image_processing:kmeans' %}>Phân cụm</a>{% endblock %}
                 </li>
                 <li class="nav-item">
-                    {% block nav4 %}<a class="nav-link" href={% url 'upload' %}>Upload</a>{% endblock %}
+                    {% block nav4 %}<a class="nav-link" href={% url 'image_processing:upload' %}>Upload</a>{% endblock %}
                 </li>
                 <li class="nav-item">
-                    {% block nav5 %}<a class="nav-link" href={% url 'logout_function' %}>Đăng xuất</a>{% endblock %}
+                    {% block nav5 %}<a class="nav-link" href={% url 'image_processing:logout_function' %}>Đăng xuất</a>{% endblock %}
                 </li>
               </ul>
         </nav>
