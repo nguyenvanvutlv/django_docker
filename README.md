@@ -93,13 +93,13 @@ DATABASES = {
 
 ### Version 1.0.0
 
-<img src="demo/demo1.png" alt=""/>
+<img src="demo/demo1.jpeg" alt=""/>
 
 ### Version 2.0.1
 
-<img src="demo/demo2.png" alt=""/>
-<img src="demo/demo3.png" alt=""/>
-<img src="demo/demo4.png" alt=""/>
+<img src="demo/demo2.jpeg" alt=""/>
+<img src="demo/demo3.jpeg" alt=""/>
+<img src="demo/demo4.jpeg" alt=""/>
 
 # Môi trường chạy từ file
 
