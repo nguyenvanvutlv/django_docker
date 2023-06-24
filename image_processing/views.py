@@ -19,7 +19,7 @@ from io import BytesIO
 # for processing image
 
 from .forms import UploadForm
-
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -93,7 +93,7 @@ def register(request):
     }
     return HttpResponse(template.render(context, request)) 
 
-
+@csrf_exempt
 def login_function(request):
     
     error = False

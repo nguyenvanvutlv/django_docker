@@ -13,6 +13,7 @@
     <div class='row'>
         <div class='col-12 col-lg-8'>
             {% for article in articles %}
+
                 {% if article.types_blog == 'bình luận' %}
                 <a href="/blog/view/{{ article.id }}/" class="text-decoration-none infscroll">
                     <div class='card border-0 pb-3 pb-sm-5'> 
@@ -30,7 +31,7 @@
                                 </div>
                             </div>
                             <div class='col-4'>
-                                <img src={% static 'image/200x200.png' %} class="img-thumbnail" alt="...">
+                                <img src={% static 'image/200x200.png' %} class="img-thumbnail" alt="..." style="width: 100px; height: 100px;">
                             </div>
                         </div>
                     </div>

@@ -35,4 +35,17 @@ urlpatterns = [
     path('view_question/', blog.question_blog, name= "question_blog"),
     # đăng xuất
     path("logout/", blog.logout_function, name="logout_function"),
+    
+    # API trả về danh sách các bài viết
+    path("view_all_article/", blog.ViewArticle.as_view()),
+    
+    path("view_article_by_id/", blog.MyArticle.as_view()),
+    
+    path("api_create_article/", blog.CreateArticle.as_view()),
+    
+    path("api_login/", blog.API_Login.as_view()),
+    
+    path("api_register/", blog.API_Register.as_view()),
+    
+    path("api_edit/", blog.API_Edit.as_view()),
 ]
